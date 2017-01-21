@@ -1,0 +1,26 @@
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+    background-color: #337AB7;
+}
+
+body{
+    background-color: #F0FFFF;
+}
+.navbar-default .navbar-collapse, .navbar-default{
+    background-color: white;
+}
+
+a{
+    color:#60A6C1;
+}
+
+.panel-info{
+    border:1px lightgrey solid;
+}
+
+.fullname{
+    color: black;
+}
+
+.modal-dialog{
+    z-index: 1050;
+}

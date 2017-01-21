@@ -1,0 +1,5 @@
+{
+    "require": {
+        "willdurand/negotiation": "^2.2"
+    }
+}

@@ -1,2 +1,4 @@
+config
 composer.phar
 logs/*
+vendor

@@ -29,6 +29,8 @@ Sample PHP applications that uses:
         AllowOverride all
     </Directory>
 
+    php_admin_value include_path "/%path-to-repository%/"
+
     Include /%path-to-repository%/config/vhost.conf
 </VirtualHost>
 ```

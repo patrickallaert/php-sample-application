@@ -1,6 +1,7 @@
 {
     "require": {
         "willdurand/negotiation": "^2.2",
-        "twbs/bootstrap": "^3.3"
+        "twbs/bootstrap": "^3.3",
+        "nikic/fast-route": "^1.2"
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-$tweet = (require "dic/tweets.php")->getById($_GET["id"]);
+$tweet = getTweetsService()->getById($_GET["id"]);
 
 if ($tweet === null) {
     http_response_code(404);
@@ -14,12 +14,12 @@ if ($tweet->userId !== $_GET["user"]) {
     exit;
 }
 
-switch (require "dic/negotiated_format.php") {
+switch (getNegotiatedFormat()) {
     case "text/html":
         (new Views\Layout(
             "@$_GET[user] - \"$tweet->message\"",
             new Views\Tweets\Page(
-                (require "dic/users.php")->getById($_GET["user"]),
+                getUsersService()->getById($_GET["user"]),
                 $tweet
             )
         ))();

@@ -1,0 +1,32 @@
+version: '3'
+networks: 
+  sample-clouxter:
+services:
+  mysql-clouxter:
+    image: mysql:5.7-debian
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: docker-mysql-clouxter
+    environment:
+      MYSQL_DATABASE: sample
+      MYSQL_USER: sampleuser
+      MYSQL_PASSWORD: samplepass
+      MYSQL_ROOT_PASSWORD: samplepass
+    volumes:
+      - ../db_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    restart: always
+    networks: 
+      - sample-clouxter
+    
+  web-clouxter:
+    build: 
+      context: .
+    container_name: docker-php-clouxter
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql-clouxter
+    networks: 
+      - sample-clouxter

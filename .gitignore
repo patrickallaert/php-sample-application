@@ -2,3 +2,4 @@ config
 composer.phar
 logs/*
 vendor
+db_data

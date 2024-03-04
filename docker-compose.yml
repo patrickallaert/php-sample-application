@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  php-apache:
+    image: php:apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php:/var/www/html
+    restart: always
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: SQLpunto2
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    restart: always
+
+volumes:
+  db-data:
+

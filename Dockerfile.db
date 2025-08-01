@@ -1,0 +1,13 @@
+# Usamos la imagen oficial de MariaDB
+FROM mariadb:10.5
+
+# Las variables se pasan via docker-compose.yml o --env-file
+ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+ENV MYSQL_DATABASE=${MYSQL_DATABASE}
+ENV MYSQL_USER=${MYSQL_USER}
+ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
+# Copiar el script SQL para inicializar la base de datos
+COPY sql/db.sql /docker-entrypoint-initdb.d/
+
+# Puerto expuesto
+EXPOSE 3306

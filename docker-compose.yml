@@ -1,0 +1,19 @@
+services:
+  web:
+    image: jmguzman11/php-sample-app:latest
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    environment:
+      - APACHE_HOST=localhost
+  db:
+    image: jmguzman11/php-sample-db:latest
+    env_file: .env
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

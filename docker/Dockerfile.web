@@ -1,0 +1,35 @@
+FROM php:7.4-apache
+
+# Forzar actualización de fuentes APT
+RUN apt-get update -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false || { sleep 10; apt-get update -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false; }
+
+# Instalar dependencias y Composer
+RUN apt-get install -y wget unzip libzip-dev vim-tiny
+RUN docker-php-ext-install pdo pdo_mysql zip
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+COPY . .
+
+# Instalar dependencias de Composer
+RUN composer install --no-scripts --no-interaction
+
+# Ajustar permisos y enlaces
+RUN chown -R www-data:www-data /var/www/html/web /var/www/html/vendor || { echo "Error ajustando permisos"; exit 1; } \
+    && chmod -R 755 /var/www/html/web /var/www/html/vendor \
+    && ln -sf /var/www/html/vendor/twbs/bootstrap/dist/fonts/ /var/www/html/web/fonts
+
+RUN a2enmod rewrite \
+    && echo '<VirtualHost *:80>\n    ServerName localhost\n    DocumentRoot /var/www/html/web\n    <Directory /var/www/html/web>\n        Options Indexes FollowSymLinks\n        AllowOverride All\n        Require all granted\n    </Directory>\n    ErrorLog ${APACHE_LOG_DIR}/error.log\n    CustomLog ${APACHE_LOG_DIR}/access.log combined\n</VirtualHost>' > /etc/apache2/sites-available/000-default.conf \
+    && a2ensite 000-default.conf \
+    && sed -i 's/LogLevel warn/LogLevel debug/g' /etc/apache2/apache2.conf \
+    && apache2ctl configtest \
+    && apache2ctl restart
+
+EXPOSE 80
+
+ENV DB_HOST=mariadb \
+    DB_NAME=sample \
+    DB_USER=sampleuser \
+    DB_PASS=samplepass

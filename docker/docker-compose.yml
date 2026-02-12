@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.web
+    image: tuusuario/php-sample-web:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=sample
+      - DB_USER=sampleuser
+      - DB_PASS=samplepass
+
+  db:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.db
+    image: tuusuario/php-sample-db:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: sample
+      MYSQL_USER: sampleuser
+      MYSQL_PASSWORD: samplepass
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
